@@ -134,9 +134,18 @@ RUN \
 
 # https://www.waveshare.com/wiki/IMX219-160_Camera
 RUN \
-  wget https://www.waveshare.com/w/upload/e/eb/Camera_overrides.tar.gz && \
-  tar zxvf Camera_overrides.tar.gz -C /var/nvidia/nvcam/settings/ && \
-  rm -f Camera_overrides.tar.gz
+  pip3 install \
+    boto3 \
+    flask \
+    flask-socketio \
+    requests \
+    eventlet \
+    pytelegraf
+
+#RUN \
+#  wget https://www.waveshare.com/w/upload/e/eb/Camera_overrides.tar.gz && \
+#  tar zxvf Camera_overrides.tar.gz -C /var/nvidia/nvcam/settings/ && \
+#  rm -f Camera_overrides.tar.gz && \
 
 # Development - to be removed
 #RUN \
@@ -144,11 +153,5 @@ RUN \
 #  apt-get install -y xinit xterm ssh && \
 #  rm -rf /var/lib/apt/lists/* && \
 #  apt-get clean
-
-FROM balenalib/jetson-nano-ubuntu:bionic-run as runner
-
-COPY --from=builder /usr /usr
-COPY --from=builder /var/nvidia /var/nvidia 
-COPY --from=builder /lib /lib
 
 CMD [ "bash" ]
